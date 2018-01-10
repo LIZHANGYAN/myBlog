@@ -1,0 +1,305 @@
+<html>
+
+<head>
+
+	<title></title>
+
+    <meta charset="utf-8">
+
+    <style>
+
+    #block{
+
+        display: block;
+
+        margin: 0 auto;
+
+    }
+
+
+
+    .buttons {
+
+        text-align: center;
+
+        margin-top: 20px;
+
+    }
+
+    </style>
+
+</head>
+
+<body>
+
+<canvas id="block"  width="600" height="500"></canvas>
+
+<div class="buttons">
+
+<button onclick="list = make_list(count);draw(list, ctx);quickSort(list, 0, list.length-1);">快速排序</button>
+
+<button onclick="list = make_list(count);draw(list, ctx);selectSort(list);">选择排序</button>
+
+<button onclick="list = make_list(count);draw(list, ctx);bubbleSort(list);">冒泡排序</button>
+
+<button onclick="alert('论算法的重要性QAQ')">喵喵哒！</button>
+
+</div>
+
+</body>
+
+<script>
+
+/* quickSort */
+
+function quickSort(list, low, high) {
+
+    var i = low,
+
+        j = high,
+
+        key = list[i];
+
+
+
+    if (low < high) {
+
+        var time = window.setInterval(function() {
+
+            if (i < j) {
+
+                while (list[j] >= key && i < j) {
+
+                    j--;
+
+                }
+
+                list[i] = list[j];
+
+                while (list[i] <= key && i < j) {
+
+                    i++;
+
+                }
+
+                list[j] = list[i];
+
+                draw(list, window.ctx);
+
+            } else {
+
+                window.clearInterval(time);
+
+                list[i] = key;
+
+                draw(list, window.ctx);
+
+                quickSort(list, low, i-1, window.ctx);
+
+                quickSort(list, i+1, high, window.ctx);
+
+            }
+
+        }, 1)
+
+    } else {
+
+        return;
+
+    }
+
+}
+
+
+
+
+
+/* selectSort */
+
+function selectSort(list) {
+
+    var i = list.length, j, temp;
+
+    var callback = function(){
+
+        if (i > 0) {
+
+            j = 0;
+
+            var time = window.setInterval(function(){
+
+                if (j < i - 1) {
+
+                    if (list[j] > list[j + 1]) {
+
+                        temp = list[j];
+
+                        list[j] = list[j + 1];
+
+                        list[j + 1] = temp; 
+
+                    }
+
+                    j++;
+
+                } else {
+
+                    draw(list, window.ctx);
+
+                    window.clearInterval(time);
+
+                    i--;
+
+                    callback();
+
+                }
+
+            }, 1);
+
+        }
+
+    }
+
+    callback();
+
+}
+
+
+
+
+
+function bubbleSort(list) {
+
+    var temp, i=0, j=0;
+
+    var callback = function() {
+
+        if (i<list.length) {
+
+            var time = window.setInterval(function(){
+
+                if (j < i) {
+
+                    if (list[i] < list[j]) {
+
+                        temp = list[i];
+
+                        list[i] = list[j];
+
+                        list[j] = temp;
+
+                    }
+
+                    j++;
+
+                    draw(list, window.ctx);
+
+                } else {
+
+                    j = 0;
+
+                    console.log(list);
+
+                    window.clearInterval(time);
+
+                    i++;
+
+                    callback();
+
+                }
+
+            }, 1)
+
+        }
+
+    }
+
+    callback();
+
+}
+
+
+
+
+
+function draw(list, ctx) {
+
+    ctx.clearRect(0, 0, 1000, 500);
+
+    ctx.fillStyle = '#EEE';
+
+    ctx.fillRect(0, 0, 1000, 500);
+
+    for (var i=0; i<list.length; i++) {
+
+        draw_line(i, list[i]);
+
+    }
+
+}
+
+
+
+
+
+function draw_line(index, value) {
+
+    ctx.beginPath();
+
+    ctx.moveTo((ctx.lineWidth)*index, 500-(500/100)*value);
+
+    ctx.lineTo((ctx.lineWidth)*index, 500);
+
+    ctx.stroke();
+
+    ctx.closePath();
+
+}
+
+
+
+
+
+function make_list(count){
+
+    var list = [];
+
+    for (var i=0; i<count; i++)
+
+        list.push(Math.ceil(Math.random()*100));
+
+    return list;
+
+}
+
+
+
+
+
+var count = 300;
+
+var canvas = document.getElementById('block');
+
+var ctx = canvas.getContext('2d');
+
+ctx.lineWidth = 1000 / count;
+
+ctx.strokeStyle = '#FF8B8B';
+
+
+
+
+
+window.onload = function() {
+
+    ctx.clearRect(0, 0, 1000, 500);
+
+    ctx.fillStyle = '#EEE';
+
+    ctx.fillRect(0, 0, 1000, 500);
+
+}
+
+</script>
+
+</html>
